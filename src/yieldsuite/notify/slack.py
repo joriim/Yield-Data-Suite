@@ -36,6 +36,7 @@ def format_summary(s: RunSummary) -> str:
         parts.append("k " + ", ".join(f"{m}={k:.3f}" for m, k in sorted(s.k_factors.items())))
     if s.mass_ok is not None:
         parts.append("mass check " + ("OK" if s.mass_ok else "*FAIL*"))
+    parts.extend(s.notes)
     if s.viewer_url:
         parts.append(f"<{s.viewer_url}|open map>")
     return " · ".join(parts)

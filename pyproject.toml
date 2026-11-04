@@ -5,11 +5,12 @@ build-backend = "hatchling.build"
 [project]
 name = "yieldsuite"
 dynamic = ["version"]
-description = "Open processing chain (L0-L5) for harvester yield maps fused with drone and satellite data"
+description = "Miiro: open modelling of crop yield and its causes, from harvester, drone, satellite and weather data (processing levels L0-L5)"
 readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.10"
-authors = [{ name = "Yield Data Suite contributors" }]
+authors = [{ name = "Miiro contributors" }]
+maintainers = [{ email = "miiro.jaaskelainen@iki.fi" }]
 keywords = ["precision agriculture", "yield monitor", "yield map", "Sentinel-2", "ISOXML", "GIS"]
 classifiers = [
   "Programming Language :: Python :: 3",
@@ -41,12 +42,17 @@ fusion = [
 ]
 # Slack bot-token notifications (webhooks need no extra dependency)
 slack = ["slack_sdk>=3.27"]
+# Drone processing via WebODM
+drone = ["requests>=2.31"]
+# Farm-data MCP server
+mcp = ["mcp>=2.3,<3"]
 docs = ["mkdocs-material>=9.5"]
 dev = ["pytest>=8", "pytest-cov>=5", "ruff>=0.6"]
-all = ["yieldsuite[geo,ingest,qa,fusion,slack]"]
+all = ["yieldsuite[geo,ingest,qa,fusion,slack,mcp,drone]"]
 
 [project.scripts]
 yieldsuite = "yieldsuite.cli:main"
+miiro = "yieldsuite.cli:main"
 
 [project.urls]
 Repository = "https://github.com/joriim/Yield-Data-Suite"

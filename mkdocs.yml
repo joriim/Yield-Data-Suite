@@ -1,4 +1,4 @@
-site_name: Yield Data Suite
+site_name: Miiro
 repo_url: https://github.com/joriim/Yield-Data-Suite
 theme:
   name: material
@@ -13,7 +13,19 @@ extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js
 nav:
   - Home: index.md
+  - Vision: vision.md
   - Architecture: architecture.md
   - Design – processing levels: design/processing-levels.md
+  - Harvester chain L1A–L4: harvester-chain.md
+  - L5 Sentinel-2 fusion: l5-sentinel2.md
+  - Multi-source imagery and WebODM: multisource.md
+  - Weather and agroclimate: weather-agroclimate.md
+  - Public data and boundary: public-data.md
+  - Management zones: zones.md
+  - Grain quality (GrainSense): quality.md
   - QGIS plugin: qgis.md
+  - Ohje – työnkulku ja MCP: ohje/tyonkulku-qgis-webodm-openeo-mcp.md
+  - Suunnitelma – datalähteet: ohje/datalahteet-suunnitelma.md
+  - Synteettinen testipelto: ohje/synteettinen-pelto.md
   - Slack: slack.md
+  - Roadmap: roadmap.md

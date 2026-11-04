@@ -1,4 +1,4 @@
-"""Yield Data Suite: processing chain L0-L5 for harvester yield maps.
+"""Miiro (Python package ``yieldsuite``): open modelling of crop yield and its causes.
 
 The core library is headless. The command-line tool, the QGIS plugin and the
 (optional) server are thin front ends on top of it.

@@ -1,7 +1,8 @@
 # One file per field and harvest year. Paths are relative to this file.
 field_id: demo-field-01
 year: 2026
-boundary: data/demo-field-01/boundary.gpkg
+boundary: data/demo-field-01/boundary.gpkg   # or fetch it: yieldsuite parcel <id>
+parcel_ids: ["1234567890"]                    # peruslohkotunnus
 crs: EPSG:3067            # ETRS-TM35FIN
 reference_moisture_pct: 14
 
@@ -27,10 +28,53 @@ harvest_logs:
 scale_tickets: data/demo-field-01/2026/scale_tickets.csv
 
 imagery:
-  - kind: sentinel2
-  - kind: drone
-    path: data/demo-field-01/2026/mavic3m_2026-07-02_reflectance.tif
-    date: 2026-07-02
+  - kind: sentinel2            # fetched via openEO from Copernicus Data Space
+    start: 2026-05-01
+    end: 2026-08-16            # exclusive
+    indices: [NDVI, NDRE, CIre, NDMI]
+    max_cloud_cover: 80        # scene pre-filter; pixels are masked with SCL
+    min_valid_share: 0.8       # drop dates where < 80 % of cells are cloud-free
+  # Drone and PlanetScope reflectance rasters (one entry per date) are harmonised
+  # to Sentinel-2 and added to the image features; see docs/multisource.md.
+  # - kind: drone
+  #   path: data/demo-field-01/2026/mavic3m_2026-07-02_reflectance.tif
+  #   date: 2026-07-02
+  #   sensor: mavic3m            # bands G, R, RE, NIR (check your WebODM output)
+  # - kind: planetscope
+  #   path: data/demo-field-01/2026/ps_2026-07-03_SR_8b.tif
+  #   date: 2026-07-03
+  #   sensor: superdove
+  #   mask: data/demo-field-01/2026/ps_2026-07-03_udm2.tif
+
+# Crop calendar: enables season weather (ERA5), GDD stages and the RUE map at L5
+crop:
+  name: spring_wheat
+  sowing_date: 2026-05-12
+  harvest_date: 2026-08-28
+  t_base_c: 5
+  harvest_index: 0.45
+  stages_gdd: {heading: 700, yellow_ripe: 1100}   # set for your crop/variety
+  ptq_window: [heading, yellow_ripe]
+location: {lat: 62.79, lon: 22.84}   # optional; otherwise the centre of the L4 grid
+weather:
+  model: era5_seamless
+
+# Grain quality from a GrainSense Flow (combine) session export (see docs/quality.md)
+# quality:
+#   sources:
+#     - path: data/demo-field-01/2026/gs_flow_session.xlsx
+#       machine_id: combine-a
+#   protein_basis: dry
+#   n_factor: 5.7
+#   lab_samples: data/demo-field-01/2026/lab_protein.csv
+
+# Public services (check the endpoints; see docs/public-data.md)
+public_data:
+  stac_url: https://stac.dataspace.copernicus.eu/v1
+  s2_collection: sentinel-2-l2a
+  parcels_wfs_url: https://inspire.ruokavirasto-awsa.com/geoserver/wfs
+  # parcels_typename and parcel_id_column are discovered from the service
+edge_buffer_m: 7.6          # FIELD_EDGE: one header width
 
 output_dir: output/demo-field-01/2026
 

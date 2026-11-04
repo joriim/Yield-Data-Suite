@@ -41,3 +41,25 @@ def test_flag_bitmask():
     flags = set_flag(flags, [True, True, False], Flag.MOISTURE)
     assert flags[0] == Flag.SPEED | Flag.MOISTURE
     assert list(is_clean(flags)) == [False, False, True]
+
+
+def test_local_outliers_flag_holes_but_not_noise():
+    from yieldsuite.l3.filters import flag_local_outliers, local_morans_i
+
+    rng = np.random.default_rng(0)
+    gx, gy = np.meshgrid(np.arange(0, 200, 5.0), np.arange(0, 100, 5.0))
+    x, y = gx.ravel(), gy.ravel()
+    v = 6 + 0.02 * x + rng.normal(0, 0.2, x.size)  # smooth trend + noise
+    assert flag_local_outliers(x, y, v, radius_m=12).sum() == 0
+
+    # A hole where the neighbours are high: a classic high-low case for Moran's I.
+    high = np.argmin(np.hypot(x - 180, y - 50))
+    # A hole where the neighbours sit at the field mean: their spatial lag is ~0, so
+    # local Moran's I cannot see it; the neighbour-median test does.
+    middle = np.argmin(np.hypot(x - 100, y - 50))
+    v[high] = v[middle] = 4.0
+    both, moran, robust = flag_local_outliers(x, y, v, radius_m=12, return_parts=True)
+    assert both[high] and both[middle] and both.sum() == 2
+    assert moran[high] and not moran[middle] and robust[middle]
+    local_i, p, k, _ = local_morans_i(x, y, v, 12)
+    assert local_i[high] < 0 and p[high] < 0.01 and abs(local_i[middle]) < abs(local_i[high])

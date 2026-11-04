@@ -55,16 +55,29 @@ def record_polygons(x, y, heading, length_m, width_m):
     return shapely.polygons(coords)
 
 
-def effective_area(polygons) -> np.ndarray:
-    """Area of each polygon not already covered by earlier (time-ordered) polygons."""
+def effective_polygons(polygons) -> np.ndarray:
+    """Each polygon minus the area already covered by earlier (time-ordered) polygons.
+
+    Apportioning mass with these non-overlapping polygons conserves the field
+    total at L4.
+    """
     polys = np.asarray(polygons, dtype=object)
     tree = STRtree(polys)
-    out = np.empty(len(polys))
+    out = np.empty(len(polys), dtype=object)
     for k, poly in enumerate(polys):
+        if poly.is_empty or poly.area == 0:
+            out[k] = poly
+            continue
         hits = tree.query(poly, predicate="intersects")
         earlier = hits[hits < k]
+        earlier = earlier[shapely.area(polys[earlier]) > 0] if earlier.size else earlier
         if earlier.size == 0:
-            out[k] = poly.area
+            out[k] = poly
         else:
-            out[k] = shapely.difference(poly, shapely.union_all(polys[earlier])).area
+            out[k] = shapely.difference(poly, shapely.union_all(polys[earlier]))
     return out
+
+
+def effective_area(polygons) -> np.ndarray:
+    """Area of each polygon not already covered by earlier (time-ordered) polygons."""
+    return shapely.area(effective_polygons(polygons))

@@ -170,7 +170,7 @@ If all records are apportioned with effective (non-overlapping) polygons, the su
 
 - **Resolution.** 20 m matches the Sentinel-2 red-edge and SWIR bands and comfortably exceeds the smoothing length of the grain flow. 10 m is possible with RTK and a short τ_c. Finer cells claim detail the signal no longer contains.
 
-- **Origin.** Cells are snapped to a fixed origin (the Sentinel-2 tile grid in UTM 35N, or a national EPSG:3067 grid) so that every year and every image falls on the same cells without resampling.
+- **Origin.** Cells are snapped to a fixed origin (the Sentinel-2 tile grid in the UTM zone of the field under study — Finland spans zones 34–36, e.g. Seinäjoki is tile 34VEQ, EPSG:32634 — or a national EPSG:3067 grid) so that every year and every image falls on the same cells without resampling.
 
 ### Quality layers (bands of the same COG)
 

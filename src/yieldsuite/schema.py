@@ -66,3 +66,13 @@ L4_BANDS: tuple[str, ...] = (
     "flagged_share",  # share of harvested area from flagged records
     "passes",  # number of distinct passes
 )
+
+# Bands of the L5 GeoTIFF, in order.
+L5_BANDS: tuple[str, ...] = (
+    "yield",  # t/ha: measured where reliable, filled from imagery elsewhere
+    "source",  # 0 no value, 1 measured (L4), 2 filled from imagery
+    "sigma",  # standard error of filled cells [t/ha]
+    "prediction",  # image-model prediction f(V) for every cell
+    "relative_yield",  # yield as % of the field mean
+    "coverage",  # L4 coverage, carried over
+)

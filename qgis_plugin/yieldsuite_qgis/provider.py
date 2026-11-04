@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 from qgis.core import QgsProcessingProvider
 
-from .algorithms import GridYieldAlgorithm
+from .algorithms import ALGORITHMS
 
 
 class YieldSuiteProvider(QgsProcessingProvider):
@@ -9,7 +9,11 @@ class YieldSuiteProvider(QgsProcessingProvider):
         return "yieldsuite"
 
     def name(self):
-        return "Yield Data Suite"
+        return "Miiro"
+
+    def longName(self):  # noqa: N802
+        return "Miiro: open modelling of crop yield and its causes"
 
     def loadAlgorithms(self):  # noqa: N802
-        self.addAlgorithm(GridYieldAlgorithm())
+        for alg in ALGORITHMS:
+            self.addAlgorithm(alg())

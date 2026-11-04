@@ -1,11 +1,11 @@
 [general]
-name=Yield Data Suite
+name=Miiro
 qgisMinimumVersion=3.28
 description=Process combine yield logs into calibrated, mass-conserving yield maps (L0-L5)
-about=QGIS front end for the yieldsuite Python library: Processing algorithms for each level of the yield-map chain, plus review of quality flags and machine parameters. Requires `pip install yieldsuite` in the QGIS Python environment.
-version=0.1.0
-author=Yield Data Suite contributors
-email=TODO-maintainer-email
+about=QGIS front end for Miiro (Python library yieldsuite), open software for modelling crop yield and its causes: Processing algorithms for each level of the yield-map chain, plus review of quality flags and machine parameters. Requires `pip install yieldsuite` in the QGIS Python environment.
+version=0.2.0
+author=Miiro contributors
+email=miiro.jaaskelainen@iki.fi
 repository=https://github.com/joriim/Yield-Data-Suite
 tracker=https://github.com/joriim/Yield-Data-Suite/issues
 tags=precision agriculture,yield,harvester,sentinel-2,processing
